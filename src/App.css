@@ -1,0 +1,32 @@
+.container {padding-top: 20px; padding-bottom: 20px;}
+
+.horse {float: left; width: 18%; border: 1px solid #000; margin: 0 1% 24px; padding: 0 1% 10px;}
+.race-label {font-family: 'Arial Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif; text-transform: uppercase; font-weight: bold; font-size: 20px; color: #777}
+.horse-label {font-size: 80px; text-align: center; font-weight: bold; line-height: normal;}
+.horse-inputs {text-align: right;}
+.horse-inputs .input-mini, .horses-sold .input-mini {font-size: 12px; width: 20px; margin: 0 0 0 2px; padding: 3px; text-align: right;}
+.horses-sold .input-mini {height: 12px; font-size: 11px; width: 12px;}
+.horses-sold {text-align: center; padding: 7px 0 0;}
+
+.select-board, .select-race {text-align: center;}
+.select-board {margin: 0 0 12px;}
+
+.odds {padding: 3px; border: 2px solid #333;}
+.horse-line {padding: 10px 5px; border-top: 1px solid #ccc;}
+.horse-line-odds {float: right; font-size: 11px; color: #777;}
+.horse-line:first-child {border-top: none;}
+.horse-line-odds strong {font-size: 16px; color: #222;}
+
+.race-meta {text-align: right;}
+.race-meta label, .race-meta input {display: inline-block; vertical-align: middle; margin: 0;}
+.race-meta label {margin: 0 5px 0 0; line-height: 1;}
+.horse-winner-label {width: 50%; display: inline-block;}
+.race-meta-field {padding: 5px;}
+
+.label {display: block;}
+
+input.horse-odds-calc {width: 18px; font-size: 12px; padding: 2px; height: 18px; margin: 0;}
+
+.save-btn-wrap {padding: 10px 0 0;}
+
+#response {margin-top: 15px;}
