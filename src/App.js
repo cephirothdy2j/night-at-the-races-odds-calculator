@@ -54,26 +54,22 @@ const getRaceTake = (houseTake, potRemainder) => {
   return houseTake + potRemainder;
 }
 
+const getInitialState = () => {
+  const obj = {
+    selectedBoard: 1,
+    winningHorse: undefined
+  };
+  for (let boardIndex = 1; boardIndex <= NUM_BOARDS; boardIndex++) {
+    for (let horseIndex = 1; horseIndex <= NUM_HORSES; horseIndex++) {
+      obj[`board${boardIndex}horse${horseIndex}`] = 1;
+    }
+  }
+  return obj;
+}
+
 class App extends Component {
 
-  state = {};
-
-  componentWillMount() {
-    this._setInitialState();
-  }
-
-  _setInitialState = () => {
-    const obj = {
-      selectedBoard: 1,
-      winningHorse: undefined
-    };
-    for (let boardIndex = 1; boardIndex <= NUM_BOARDS; boardIndex++) {
-      for (let horseIndex = 1; horseIndex <= NUM_HORSES; horseIndex++) {
-        obj[`board${boardIndex}horse${horseIndex}`] = 1;
-      }
-    }
-    this.setState(obj);
-  }
+  state = getInitialState();
 
   _handleBoardChange = (e) => {
     this.setState({ selectedBoard: Number(e.target.value) });
@@ -92,6 +88,12 @@ class App extends Component {
   _handleWinningHorseChange = (e) => {
     const { value } = e.target;
     this.setState({ winningHorse: Number(value) });
+  }
+
+  _saveRace = () => {
+    const now = Date.now();
+    window.localStorage.setItem(now, JSON.stringify(this.state))
+    this.setState(getInitialState());
   }
 
   render() {
@@ -114,7 +116,9 @@ class App extends Component {
       payoutPerHorse[`horse${i}Payout`] = getPayoutPerTicket(availablePot, getTicketsSoldPerHorse(this.state, i));
     }
 
-    const raceTake = getRaceTake(houseTake, 0);
+    const actualPayout = winningHorse ? (getTicketsSoldPerHorse(this.state, winningHorse) * payoutPerHorse[`horse${winningHorse}Payout`]): 0;
+    const potRemainder = availablePot - actualPayout;
+    const raceTake = getRaceTake(houseTake, potRemainder);
 
     const horses = [];
     for (let i = 1; i <= NUM_HORSES; i++) {
@@ -161,9 +165,9 @@ class App extends Component {
                   <dt>Available Pot:</dt>
                   <dd>${availablePot}</dd>
                   <dt>- Actual Payout:</dt>
-                  <dd>$69</dd>
+                  <dd>${actualPayout}</dd>
                   <dt>= Pot Remainder:</dt>
-                  <dd>$69</dd>
+                  <dd>${potRemainder}</dd>
                 </dl>
               </Col>
               <Col sm={4}>
@@ -171,13 +175,13 @@ class App extends Component {
                   <dt>House's {HOUSE_TAKE * 100}%:</dt>
                   <dd>{houseTake}</dd>
                   <dt>+ Pot Remainder:</dt>
-                  <dd>69</dd>
+                  <dd>{potRemainder}</dd>
                   <dt>= Race Take:</dt>
                   <dd>${raceTake}</dd>
                 </dl>
               </Col>
             </Row>
-            <button type="submit" className="btn btn-success btn-block btn-large">Save This Race!</button>
+            <button type="submit" onClick={this._saveRace} className="btn btn-success btn-block btn-large">Save This Race!</button>
           </Col>
           <Col sm={3}>
             <Odds {...payoutPerHorse} winningHorse={winningHorse} onChange={this._handleWinningHorseChange} />
